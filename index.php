@@ -180,4 +180,13 @@
         function calculate() {
             var expression = document.getElementById("calcInput").value;
             try {
-                var result = eval(expression
+                var result = eval(expression);
+                document.getElementById("calcResult").innerHTML = `Result: ${result}`;
+            } catch (error) {
+                document.getElementById("calcResult").innerHTML = "Invalid Expression";
+            }
+        }
+    </script>
+</body>
+
+</html>
