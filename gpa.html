@@ -9,31 +9,28 @@
 
 <body>
     <h1>Calculate Your GPA</h1>
-    <label for="gradesInput">Enter your grades (comma-separated):</label>
-    <input type="text" id="gradesInput">
-    <br>
-    <label for="creditHoursInput">Enter your credit hours (comma-separated):</label>
-    <input type="text" id="creditHoursInput">
-    <button onclick="calculateGPA()">Calculate GPA</button>
-
-    <script>
-        function calculateGPA() {
-            var gradesInput = document.getElementById("gradesInput").value.split(",");
-            var creditHoursInput = document.getElementById("creditHoursInput").value.split(",");
-            var totalPoints = 0;
-            var totalCreditHours = 0;
-
-            for (var i = 0; i < gradesInput.length; i++) {
-                totalPoints += parseFloat(gradesInput[i]) * parseFloat(creditHoursInput[i]);
-                totalCreditHours += parseFloat(creditHoursInput[i]);
-            }
-
-            var gpa = totalPoints / totalCreditHours;
-            alert("Your GPA is: " + gpa.toFixed(2));
+    <?php
+    if ($_SERVER["REQUEST_METHOD"] == "POST") {
+        $grades = $_POST["grades"];
+        $creditHours = $_POST["creditHours"];
+        
+        // Perform GPA calculation logic here
+        
+        // Example: Calculate average grade and display
+        $gradesArray = explode(",", $grades);
+        $creditHoursArray = explode(",", $creditHours);
+        $totalPoints = 0;
+        $totalCreditHours = 0;
+        for ($i = 0; $i < count($gradesArray); $i++) {
+            $totalPoints += (float)$gradesArray[$i] * (float)$creditHoursArray[$i];
+            $totalCreditHours += (float)$creditHoursArray[$i];
         }
-    </script>
-
-    <p><a href="index.html">Go back to Home</a></p>
+        $gpa = $totalPoints / $totalCreditHours;
+        
+        echo "Your GPA is: " . number_format($gpa, 2);
+    }
+    ?>
+    <p><a href="index.php">Go back to Home</a></p>
 </body>
 
 </html>
