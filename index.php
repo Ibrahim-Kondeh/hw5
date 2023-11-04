@@ -49,81 +49,117 @@
         .result {
             margin-top: 20px;
         }
+        .calculator {float: right;}
     </style>
 </head>
 
 <body>
     <header>
-       MICHAEL F. PRICE COLLEGE OF BUSINESS
+        College Name
     </header>
     <div class="container">
         <div class="input-group">
-            <label for="numClasses">Number of Classes (1-5):</label>
-            <input type="number" id="numClasses" min="1" max="5">
+            <label for="name">Name:</label>
+            <input type="text" id="name">
         </div>
-
+        <div class="input-group">
+            <label for="studentId">Student ID:</label>
+            <input type="text" id="studentId">
+        </div>
         <div id="classInputs"></div>
-
-        <button onclick="generateClassInputs()">Generate Class Inputs</button>
+        <button onclick="generateClassInputs()">Add Class</button>
         <button onclick="calculateGrades()">Calculate Grades</button>
 
         <div class="result" id="result"></div>
+
+        <div class="calculator">
+            <h3>Calculator</h3>
+            <input type="text" id="calcInput">
+            <br>
+            <button onclick="calculate()">Calculate</button>
+            <div id="calcResult"></div>
+        </div>
     </div>
 
     <script>
         function generateClassInputs() {
-            var numClasses = parseInt(document.getElementById("numClasses").value);
             var classInputsDiv = document.getElementById("classInputs");
-            classInputsDiv.innerHTML = "";
+            var classNum = classInputsDiv.children.length + 1;
 
-            for (var i = 1; i <= numClasses; i++) {
-                var classInputDiv = document.createElement("div");
-                classInputDiv.className = "input-group";
-                classInputDiv.innerHTML = `
-                    <h3>Class ${i}</h3>
-                    <label for="exam${i}">Exam (40%):</label>
-                    <input type="number" id="exam${i}" min="0" max="100">
-                    <label for="homework${i}">Homework (30%):</label>
-                    <input type="number" id="homework${i}" min="0" max="100">
-                    <label for="project${i}">Project (20%):</label>
-                    <input type="number" id="project${i}" min="0" max="100">
-                    <label for="participation${i}">Class Participation (10%):</label>
-                    <input type="number" id="participation${i}" min="0" max="100">
-                `;
-                classInputsDiv.appendChild(classInputDiv);
-            }
+            var classInputDiv = document.createElement("div");
+            classInputDiv.className = "input-group";
+            classInputDiv.innerHTML = `
+                <h3>Class ${classNum}</h3>
+                <label for="className${classNum}">Class Name:</label>
+                <input type="text" id="className${classNum}">
+                <label for="exam${classNum}">Exam (40%):</label>
+                <input type="number" id="exam${classNum}" min="0" max="100">
+                <label for="homework${classNum}">Homework (30%):</label>
+                <input type="number" id="homework${classNum}" min="0" max="100">
+                <label for="project${classNum}">Project (20%):</label>
+                <input type="number" id="project${classNum}" min="0" max="100">
+                <label for="participation${classNum}">Class Participation (10%):</label>
+                <input type="number" id="participation${classNum}" min="0" max="100">
+                <label for="gpaHours${classNum}">GPA Hours:</label>
+                <input type="number" id="gpaHours${classNum}" min="0">
+            `;
+            classInputsDiv.appendChild(classInputDiv);
         }
 
         function calculateGrades() {
-            var numClasses = parseInt(document.getElementById("numClasses").value);
+            var numClasses = document.getElementById("classInputs").children.length;
             var totalPercentage = 0;
-            var gradesNeeded = [];
+            var highestGrade = 0;
+            var lowestGrade = 101;
+            var highestClass = "";
+            var lowestClass = "";
+            var totalGPAHours = 0;
+            var totalGradePoints = 0;
 
             for (var i = 1; i <= numClasses; i++) {
+                var className = document.getElementById(`className${i}`).value;
                 var exam = parseFloat(document.getElementById(`exam${i}`).value) * 0.4;
                 var homework = parseFloat(document.getElementById(`homework${i}`).value) * 0.3;
                 var project = parseFloat(document.getElementById(`project${i}`).value) * 0.2;
                 var participation = parseFloat(document.getElementById(`participation${i}`).value) * 0.1;
+                var gpaHours = parseInt(document.getElementById(`gpaHours${i}`).value);
 
                 var classPercentage = exam + homework + project + participation;
                 totalPercentage += classPercentage;
 
-                if (classPercentage < 90) {
-                    var gradeNeeded = ((90 - classPercentage) / 0.4).toFixed(2);
-                    gradesNeeded.push(`Class ${i}: ${gradeNeeded}% needed for 90% overall`);
+                var classGPA = calculateGPA(classPercentage);
+                totalGPAHours += gpaHours;
+                totalGradePoints += classGPA * gpaHours;
+
+                if (classPercentage > highestGrade) {
+                    highestGrade = classPercentage;
+                    highestClass = className;
+                }
+
+                if (classPercentage < lowestGrade) {
+                    lowestGrade = classPercentage;
+                    lowestClass = className;
                 }
             }
 
-            var gpa = calculateGPA(totalPercentage / numClasses);
-            var resultMessage = `Total Percentage: ${(totalPercentage / numClasses).toFixed(2)}%<br>`;
-            if (gradesNeeded.length > 0) {
-                resultMessage += "<strong>Grades Needed:</strong><br>";
-                gradesNeeded.forEach(function (grade) {
-                    resultMessage += `${grade}<br>`;
-                });
-            }
-            resultMessage += `GPA: ${gpa.toFixed(2)}`;
+            var overallPercentage = totalPercentage / numClasses;
+            var overallGPA = calculateGPA(overallPercentage);
+            var averageScore = totalPercentage / numClasses;
+            var overallGPAValue = totalGradePoints / totalGPAHours;
 
+            var name = document.getElementById("name").value;
+            var studentId = document.getElementById("studentId").value;
+
+            var resultMessage = `Hello ${name} (${studentId}),<br><br>`;
+            resultMessage += `Overall Percentage: ${overallPercentage.toFixed(2)}%<br>`;
+            resultMessage += `Overall GPA: ${overallGPA.toFixed(2)}<br>`;
+            resultMessage += `Average Score: ${averageScore.toFixed(2)}%<br>`;
+            resultMessage += `Highest Grade: ${highestGrade.toFixed(2)}% (Class: ${highestClass})<br>`;
+            resultMessage += `Congratulations for your achievement!<br>`;
+            resultMessage += `Lowest Grade: ${lowestGrade.toFixed(2)}% (Class: ${lowestClass})<br>`;
+            resultMessage += `Don't worry, keep working hard!<br>`;
+            resultMessage += `Overall GPA (calculated using provided GPA hours): ${overallGPAValue.toFixed(2)}<br>`;
+            
             document.getElementById("result").innerHTML = resultMessage;
         }
 
@@ -140,7 +176,8 @@
                 return 0.0;
             }
         }
-    </script>
-</body>
 
-</html>
+        function calculate() {
+            var expression = document.getElementById("calcInput").value;
+            try {
+                var result = eval(expression
