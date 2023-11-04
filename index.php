@@ -8,6 +8,9 @@
     <style>
         body {
             font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
         }
 
         header {
@@ -18,38 +21,36 @@
         }
 
         .container {
-            max-width: 400px;
+            max-width: 800px;
             margin: 0 auto;
+            padding: 20px;
+            background-color: white;
+            box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.1);
         }
 
-        .input-group {
-            margin-bottom: 15px;
-        }
-
-        .input-group label {
-            display: block;
-            margin-bottom: 5px;
-        }
-
-        .input-group input[type="text"] {
+        table {
             width: 100%;
-            padding: 8px;
-            font-size: 16px;
+            border-collapse: collapse;
+            margin-bottom: 20px;
         }
 
-        .input-group button {
-            background-color: #4CAF50;
-            color: white;
-            border: none;
-            padding: 10px 20px;
-            cursor: pointer;
-            font-size: 16px;
+        table, th, td {
+            border: 1px solid #ddd;
+            text-align: left;
         }
 
-        .result {
+        th, td {
+            padding: 10px;
+        }
+
+        .result-message {
             margin-top: 20px;
         }
-        .calculator {float: right;}
+
+        .calculator {
+            float: right;
+            margin-top: 20px;
+        }
     </style>
 </head>
 
@@ -57,7 +58,7 @@
     <header>
   MICHALE F. PRICE COLLEGE OF BUSINESS
     </header>
-    <div class="container">
+   <div class="container">
         <div class="input-group">
             <label for="name">Name:</label>
             <input type="text" id="name">
@@ -70,7 +71,18 @@
         <button onclick="generateClassInputs()">Add Class</button>
         <button onclick="calculateGrades()">Calculate Grades</button>
 
-        <div class="result" id="result"></div>
+        <table id="resultTable">
+            <thead>
+                <tr>
+                    <th>Class Name</th>
+                    <th>Total Percentage</th>
+                    <th>Letter Grade</th>
+                </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+
+        <div class="result-message" id="resultMessage"></div>
 
         <div class="calculator">
             <h3>Calculator</h3>
