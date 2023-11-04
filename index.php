@@ -55,7 +55,7 @@
 
 <body>
     <header>
-        College Name
+  MICHALE F. PRICE COLLEGE OF BUSINESS
     </header>
     <div class="container">
         <div class="input-group">
