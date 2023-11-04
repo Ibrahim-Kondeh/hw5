@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculate GPA</title>
+</head>
+
+<body>
+    <h1>Calculate Your GPA</h1>
+    <p>Enter your grades and credit hours below:</p>
+    <input type="text" id="gradesInput" placeholder="Grades (comma-separated)">
+    <input type="text" id="creditHoursInput" placeholder="Credit Hours (comma-separated)">
+    <button onclick="calculateGPA()">Calculate GPA</button>
+
+    <script>
+        function calculateGPA() {
+            var gradesInput = document.getElementById("gradesInput").value.split(",");
+            var creditHoursInput = document.getElementById("creditHoursInput").value.split(",");
+            var totalPoints = 0;
+            var totalCreditHours = 0;
+
+            for (var i = 0; i < gradesInput.length; i++) {
+                totalPoints += parseFloat(gradesInput[i]) * parseFloat(creditHoursInput[i]);
+                totalCreditHours += parseFloat(creditHoursInput[i]);
+            }
+
+            var gpa = totalPoints / totalCreditHours;
+            alert("Your GPA: " + gpa.toFixed(2));
+        }
+    </script>
+
+    <p><a href="index.html">Go back to Home</a></p>
+</body>
+
+</html>
