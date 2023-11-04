@@ -9,9 +9,11 @@
 
 <body>
     <h1>Calculate Your GPA</h1>
-    <p>Enter your grades and credit hours below:</p>
-    <input type="text" id="gradesInput" placeholder="Grades (comma-separated)">
-    <input type="text" id="creditHoursInput" placeholder="Credit Hours (comma-separated)">
+    <label for="gradesInput">Enter your grades (comma-separated):</label>
+    <input type="text" id="gradesInput">
+    <br>
+    <label for="creditHoursInput">Enter your credit hours (comma-separated):</label>
+    <input type="text" id="creditHoursInput">
     <button onclick="calculateGPA()">Calculate GPA</button>
 
     <script>
@@ -27,7 +29,7 @@
             }
 
             var gpa = totalPoints / totalCreditHours;
-            alert("Your GPA: " + gpa.toFixed(2));
+            alert("Your GPA is: " + gpa.toFixed(2));
         }
     </script>
 
