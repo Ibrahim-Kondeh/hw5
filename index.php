@@ -119,61 +119,73 @@
         }
 
         function calculateGrades() {
-            var numClasses = document.getElementById("classInputs").children.length;
-            var totalPercentage = 0;
-            var highestGrade = 0;
-            var lowestGrade = 101;
-            var highestClass = "";
-            var lowestClass = "";
-            var totalGPAHours = 0;
-            var totalGradePoints = 0;
+    var numClasses = document.getElementById("classInputs").children.length;
+    var totalPercentage = 0;
+    var highestGrade = 0;
+    var lowestGrade = 101;
+    var highestClass = "";
+    var lowestClass = "";
+    var totalGPAHours = 0;
+    var totalGradePoints = 0;
 
-            for (var i = 1; i <= numClasses; i++) {
-                var className = document.getElementById(`className${i}`).value;
-                var exam = parseFloat(document.getElementById(`exam${i}`).value) * 0.4;
-                var homework = parseFloat(document.getElementById(`homework${i}`).value) * 0.3;
-                var project = parseFloat(document.getElementById(`project${i}`).value) * 0.2;
-                var participation = parseFloat(document.getElementById(`participation${i}`).value) * 0.1;
-                var gpaHours = parseInt(document.getElementById(`gpaHours${i}`).value);
+    for (var i = 1; i <= numClasses; i++) {
+        var className = document.getElementById(`className${i}`).value;
+        var exam = parseFloat(document.getElementById(`exam${i}`).value) * 0.4;
+        var homework = parseFloat(document.getElementById(`homework${i}`).value) * 0.3;
+        var project = parseFloat(document.getElementById(`project${i}`).value) * 0.2;
+        var participation = parseFloat(document.getElementById(`participation${i}`).value) * 0.1;
+        var gpaHours = parseInt(document.getElementById(`gpaHours${i}`).value);
 
-                var classPercentage = exam + homework + project + participation;
-                totalPercentage += classPercentage;
+        var classPercentage = exam + homework + project + participation;
+        totalPercentage += classPercentage;
 
-                var classGPA = calculateGPA(classPercentage);
-                totalGPAHours += gpaHours;
-                totalGradePoints += classGPA * gpaHours;
+        var classGPA = calculateGPA(classPercentage);
+        totalGPAHours += gpaHours;
+        totalGradePoints += classGPA * gpaHours;
 
-                if (classPercentage > highestGrade) {
-                    highestGrade = classPercentage;
-                    highestClass = className;
-                }
-
-                if (classPercentage < lowestGrade) {
-                    lowestGrade = classPercentage;
-                    lowestClass = className;
-                }
-            }
-
-            var overallPercentage = totalPercentage / numClasses;
-            var overallGPA = calculateGPA(overallPercentage);
-            var averageScore = totalPercentage / numClasses;
-            var overallGPAValue = totalGradePoints / totalGPAHours;
-
-            var name = document.getElementById("name").value;
-            var studentId = document.getElementById("studentId").value;
-
-            var resultMessage = `Hello ${name} (${studentId}),<br><br>`;
-            resultMessage += `Overall Percentage: ${overallPercentage.toFixed(2)}%<br>`;
-            resultMessage += `Overall GPA: ${overallGPA.toFixed(2)}<br>`;
-            resultMessage += `Average Score: ${averageScore.toFixed(2)}%<br>`;
-            resultMessage += `Highest Grade: ${highestGrade.toFixed(2)}% (Class: ${highestClass})<br>`;
-            resultMessage += `Congratulations for your achievement!<br>`;
-            resultMessage += `Lowest Grade: ${lowestGrade.toFixed(2)}% (Class: ${lowestClass})<br>`;
-            resultMessage += `Don't worry, keep working hard!<br>`;
-            resultMessage += `Overall GPA (calculated using provided GPA hours): ${overallGPAValue.toFixed(2)}<br>`;
-            
-            document.getElementById("result").innerHTML = resultMessage;
+        if (classPercentage > highestGrade) {
+            highestGrade = classPercentage;
+            highestClass = className;
         }
+
+        if (classPercentage < lowestGrade) {
+            lowestGrade = classPercentage;
+            lowestClass = className;
+        }
+    }
+
+    var overallPercentage = totalPercentage / numClasses;
+    var overallGPA = calculateGPA(overallPercentage);
+    var averageScore = totalPercentage / numClasses;
+    var overallGPAValue = totalGradePoints / totalGPAHours;
+
+    var name = document.getElementById("name").value;
+    var studentId = document.getElementById("studentId").value;
+
+    var resultTableBody = document.getElementById("resultTable").getElementsByTagName('tbody')[0];
+    resultTableBody.innerHTML = '';
+
+    var newRow = resultTableBody.insertRow();
+    var cell1 = newRow.insertCell();
+    var cell2 = newRow.insertCell();
+    var cell3 = newRow.insertCell();
+
+    cell1.innerHTML = highestClass;
+    cell2.innerHTML = overallPercentage.toFixed(2) + "%";
+    cell3.innerHTML = calculateLetterGrade(overallPercentage);
+
+    var resultMessage = `Hello ${name} (${studentId}),<br><br>`;
+    resultMessage += `Overall Percentage: ${overallPercentage.toFixed(2)}%<br>`;
+    resultMessage += `Overall GPA: ${overallGPA.toFixed(2)}<br>`;
+    resultMessage += `Average Score: ${averageScore.toFixed(2)}%<br>`;
+    resultMessage += `Highest Grade: ${highestGrade.toFixed(2)}% (Class: ${highestClass})<br>`;
+    resultMessage += `Congratulations for your achievement!<br>`;
+    resultMessage += `Lowest Grade: ${lowestGrade.toFixed(2)}% (Class: ${lowestClass})<br>`;
+    resultMessage += `Don't worry, keep working hard!<br>`;
+    resultMessage += `Overall GPA (calculated using provided GPA hours): ${overallGPAValue.toFixed(2)}<br>`;
+
+    document.getElementById("resultMessage").innerHTML = resultMessage;
+}
 
         function calculateGPA(percentage) {
             if (percentage >= 90) {
