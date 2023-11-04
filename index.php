@@ -54,98 +54,91 @@
 
 <body>
     <header>
-        College Name
+       MICHAEL F. PRICE COLLEGE OF BUSINESS
     </header>
     <div class="container">
         <div class="input-group">
-            <label for="name">Name:</label>
-            <input type="text" id="name">
+            <label for="numClasses">Number of Classes (1-5):</label>
+            <input type="number" id="numClasses" min="1" max="5">
         </div>
-        <div class="input-group">
-            <label for="studentId">Student ID:</label>
-            <input type="text" id="studentId">
-        </div>
-        <div class="input-group">
-            <label for="exam1">Exam 1 (15%):</label>
-            <input type="text" id="exam1">
-        </div>
-        <div class="input-group">
-            <label for="exam2">Exam 2 (15%):</label>
-            <input type="text" id="exam2">
-        </div>
-        <div class="input-group">
-            <label for="exam3">Exam 3 (15%):</label>
-            <input type="text" id="exam3">
-        </div>
-        <div class="input-group">
-            <label for="homework">Homework (30%):</label>
-            <input type="text" id="homework">
-        </div>
-        <div class="input-group">
-            <label for="project">Project (20%):</label>
-            <input type="text" id="project">
-        </div>
-        <div class="input-group">
-            <label for="participation">Class Participation (5%):</label>
-            <input type="text" id="participation">
-        </div>
+
+        <div id="classInputs"></div>
+
+        <button onclick="generateClassInputs()">Generate Class Inputs</button>
         <button onclick="calculateGrades()">Calculate Grades</button>
+
         <div class="result" id="result"></div>
     </div>
 
     <script>
+        function generateClassInputs() {
+            var numClasses = parseInt(document.getElementById("numClasses").value);
+            var classInputsDiv = document.getElementById("classInputs");
+            classInputsDiv.innerHTML = "";
+
+            for (var i = 1; i <= numClasses; i++) {
+                var classInputDiv = document.createElement("div");
+                classInputDiv.className = "input-group";
+                classInputDiv.innerHTML = `
+                    <h3>Class ${i}</h3>
+                    <label for="exam${i}">Exam (40%):</label>
+                    <input type="number" id="exam${i}" min="0" max="100">
+                    <label for="homework${i}">Homework (30%):</label>
+                    <input type="number" id="homework${i}" min="0" max="100">
+                    <label for="project${i}">Project (20%):</label>
+                    <input type="number" id="project${i}" min="0" max="100">
+                    <label for="participation${i}">Class Participation (10%):</label>
+                    <input type="number" id="participation${i}" min="0" max="100">
+                `;
+                classInputsDiv.appendChild(classInputDiv);
+            }
+        }
+
         function calculateGrades() {
-            var name = document.getElementById("name").value;
-            var studentId = document.getElementById("studentId").value;
-            var exam1 = parseFloat(document.getElementById("exam1").value);
-            var exam2 = parseFloat(document.getElementById("exam2").value);
-            var exam3 = parseFloat(document.getElementById("exam3").value);
-            var homework = parseFloat(document.getElementById("homework").value);
-            var project = parseFloat(document.getElementById("project").value);
-            var participation = parseFloat(document.getElementById("participation").value);
+            var numClasses = parseInt(document.getElementById("numClasses").value);
+            var totalPercentage = 0;
+            var gradesNeeded = [];
 
-            var totalScore = (exam1 + exam2 + exam3) * 0.15 + homework * 0.3 + project * 0.2 + participation * 0.05;
-            var letterGrade = calculateLetterGrade(totalScore);
+            for (var i = 1; i <= numClasses; i++) {
+                var exam = parseFloat(document.getElementById(`exam${i}`).value) * 0.4;
+                var homework = parseFloat(document.getElementById(`homework${i}`).value) * 0.3;
+                var project = parseFloat(document.getElementById(`project${i}`).value) * 0.2;
+                var participation = parseFloat(document.getElementById(`participation${i}`).value) * 0.1;
 
-            var resultMessage = `Hello ${name} (${studentId}),<br><br>`;
-            resultMessage += `Total Score: ${totalScore.toFixed(2)}<br>`;
-            resultMessage += `Letter Grade: ${letterGrade}<br><br>`;
-            resultMessage += `Average Grade: ${calculateAverage(exam1, exam2, exam3, homework, project, participation).toFixed(2)}<br>`;
-            resultMessage += `Highest Grade: ${Math.max(exam1, exam2, exam3, homework, project, participation)}<br>`;
-            resultMessage += `Lowest Grade: ${Math.min(exam1, exam2, exam3, homework, project, participation)}<br>`;
-            resultMessage += `Grades Needed for A: ${calculateGradesNeeded(totalScore, 0.9).toFixed(2)}<br>`;
-            resultMessage += `Grades Needed for B: ${calculateGradesNeeded(totalScore, 0.8).toFixed(2)}<br>`;
-            resultMessage += `Grades Needed for C: ${calculateGradesNeeded(totalScore, 0.7).toFixed(2)}<br>`;
-            resultMessage += `Grades Needed for D: ${calculateGradesNeeded(totalScore, 0.6).toFixed(2)}<br>`;
+                var classPercentage = exam + homework + project + participation;
+                totalPercentage += classPercentage;
+
+                if (classPercentage < 90) {
+                    var gradeNeeded = ((90 - classPercentage) / 0.4).toFixed(2);
+                    gradesNeeded.push(`Class ${i}: ${gradeNeeded}% needed for 90% overall`);
+                }
+            }
+
+            var gpa = calculateGPA(totalPercentage / numClasses);
+            var resultMessage = `Total Percentage: ${(totalPercentage / numClasses).toFixed(2)}%<br>`;
+            if (gradesNeeded.length > 0) {
+                resultMessage += "<strong>Grades Needed:</strong><br>";
+                gradesNeeded.forEach(function (grade) {
+                    resultMessage += `${grade}<br>`;
+                });
+            }
+            resultMessage += `GPA: ${gpa.toFixed(2)}`;
 
             document.getElementById("result").innerHTML = resultMessage;
         }
 
-        function calculateLetterGrade(score) {
-            if (score >= 0.9) {
-                return 'A';
-            } else if (score >= 0.8) {
-                return 'B';
-            } else if (score >= 0.7) {
-                return 'C';
-            } else if (score >= 0.6) {
-                return 'D';
+        function calculateGPA(percentage) {
+            if (percentage >= 90) {
+                return 4.0;
+            } else if (percentage >= 80) {
+                return 3.0 + (percentage - 80) / 10;
+            } else if (percentage >= 70) {
+                return 2.0 + (percentage - 70) / 10;
+            } else if (percentage >= 60) {
+                return 1.0 + (percentage - 60) / 10;
             } else {
-                return 'F';
+                return 0.0;
             }
-        }
-
-        function calculateAverage(exam1, exam2, exam3, homework, project, participation) {
-            var grades = [exam1, exam2, exam3, homework, project, participation];
-            var total = 0;
-            for (var i = 0; i < grades.length; i++) {
-                total += grades[i];
-            }
-            return total / grades.length;
-        }
-
-        function calculateGradesNeeded(currentScore, targetGrade) {
-            return (targetGrade - currentScore) / (1 - targetGrade);
         }
     </script>
 </body>
