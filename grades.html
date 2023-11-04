@@ -9,18 +9,13 @@
 
 <body>
     <h1>Check Your Grades</h1>
-    <label for="gradesInput">Enter your grades (comma-separated):</label>
-    <input type="text" id="gradesInput">
-    <button onclick="checkGrades()">Check Grades</button>
-
-    <script>
-        function checkGrades() {
-            var gradesInput = document.getElementById("gradesInput").value;
-            alert("Your grades: " + gradesInput);
-        }
-    </script>
-
-    <p><a href="index.html">Go back to Home</a></p>
+    <?php
+    if ($_SERVER["REQUEST_METHOD"] == "POST") {
+        $grades = $_POST["grades"];
+        echo "Your grades: " . $grades;
+    }
+    ?>
+    <p><a href="index.php">Go back to Home</a></p>
 </body>
 
 </html>
