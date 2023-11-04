@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Check Grades</title>
+</head>
+
+<body>
+    <h1>Check Your Grades</h1>
+    <p>Enter your grades below:</p>
+    <input type="text" id="gradesInput">
+    <button onclick="checkGrades()">Check Grades</button>
+
+    <script>
+        function checkGrades() {
+            var gradesInput = document.getElementById("gradesInput").value;
+            alert("Your grades: " + gradesInput);
+        }
+    </script>
+    
+    <p><a href="index.html">Go back to Home</a></p>
+</body>
+
+</html>
