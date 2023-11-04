@@ -4,23 +4,39 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Check Grades</title>
+    <title>Grade Calculator</title>
 </head>
 
 <body>
-    <h1>Check Your Grades</h1>
-    <p>Enter your grades below:</p>
-    <input type="text" id="gradesInput">
-    <button onclick="checkGrades()">Check Grades</button>
+    <h1>Welcome to the Grade Calculator!</h1>
+    <label for="name">Enter your name:</label>
+    <input type="text" id="name">
+    <br>
+    <label for="grades">Enter your grades (comma-separated):</label>
+    <input type="text" id="grades">
+    <br>
+    <label for="creditHours">Enter your credit hours (comma-separated):</label>
+    <input type="text" id="creditHours">
+    <br>
+    <button onclick="calculateGPA()">Calculate GPA</button>
 
     <script>
-        function checkGrades() {
-            var gradesInput = document.getElementById("gradesInput").value;
-            alert("Your grades: " + gradesInput);
+        function calculateGPA() {
+            var name = document.getElementById("name").value;
+            var gradesInput = document.getElementById("grades").value.split(",");
+            var creditHoursInput = document.getElementById("creditHours").value.split(",");
+            var totalPoints = 0;
+            var totalCreditHours = 0;
+
+            for (var i = 0; i < gradesInput.length; i++) {
+                totalPoints += parseFloat(gradesInput[i]) * parseFloat(creditHoursInput[i]);
+                totalCreditHours += parseFloat(creditHoursInput[i]);
+            }
+
+            var gpa = totalPoints / totalCreditHours;
+            alert("Hello, " + name + "! Your GPA is: " + gpa.toFixed(2));
         }
     </script>
-    
-    <p><a href="index.html">Go back to Home</a></p>
 </body>
 
 </html>
