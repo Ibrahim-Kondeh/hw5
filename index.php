@@ -51,6 +51,19 @@
             float: right;
             margin-top: 20px;
         }
+        .custom-button {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            cursor: pointer;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+
+        .custom-button:hover {
+            background-color: #45a049;
+        }
     </style>
 </head>
 
@@ -95,7 +108,8 @@
 
     <script>
         function generateClassInputs() {
-            /* ... (your existing JavaScript code for generating class inputs) ... */
+           <button class="custom-button" onclick="generateClassInputs()">Add Class</button>
+
         }
 
         function calculateGrades() {
@@ -198,6 +212,8 @@
                 document.getElementById("calcResult").innerHTML = "Invalid Expression";
             }
         }
+        
+
     </script>
 </body>
 
