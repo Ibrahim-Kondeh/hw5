@@ -108,8 +108,7 @@
 
     <script>
         function generateClassInputs() {
-           <button class="custom-button" onclick="generateClassInputs()">Add Class</button>
-
+           
         }
 
         function calculateGrades() {
