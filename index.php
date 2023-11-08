@@ -131,7 +131,7 @@
             classInputsDiv.appendChild(classInputDiv);
         }
 
-        function calculateGrades() {
+         function calculateGrades() {
             var numClasses = document.getElementById("classInputs").children.length;
             var totalPercentage = 0;
             var highestGrade = 0;
@@ -143,12 +143,13 @@
 
             for (var i = 1; i <= numClasses; i++) {
                 var className = document.getElementById(`className${i}`).value;
-                var exam = parseFloat(document.getElementById(`exam${i}`).value) * 0.32;
-                var homework = parseFloat(document.getElementById(`homework${i}`).value) * 0.24;
-                var project = parseFloat(document.getElementById(`project${i}`).value) * 0.16;
-                var participation = parseFloat(document.getElementById(`participation${i}`).value) * 0.08;
+                var exam = parseFloat(document.getElementById(`exam${i}`).value) * 0.4;
+                var homework = parseFloat(document.getElementById(`homework${i}`).value) * 0.3;
+                var project = parseFloat(document.getElementById(`project${i}`).value) * 0.2;
+                var participation = parseFloat(document.getElementById(`participation${i}`).value) * 0.1;
                 var gpaHours = parseInt(document.getElementById(`gpaHours${i}`).value);
 
+                // Calculate the class percentage based on weighted scores
                 var classPercentage = exam + homework + project + participation;
                 totalPercentage += classPercentage;
 
@@ -166,6 +167,7 @@
                     lowestClass = className;
                 }
 
+                // Update the result table with class details
                 var resultTableBody = document.getElementById("resultTable").getElementsByTagName('tbody')[0];
                 var newRow = resultTableBody.insertRow();
                 var cell1 = newRow.insertCell();
@@ -177,9 +179,11 @@
                 cell3.innerHTML = calculateLetterGrade(classPercentage);
             }
 
+            // Calculate overall percentage and GPA
             var overallPercentage = totalPercentage / numClasses;
             var overallGPAValue = totalGradePoints / totalGPAHours;
 
+            // Display the results and messages
             var name = document.getElementById("name").value;
             var studentId = document.getElementById("studentId").value;
 
