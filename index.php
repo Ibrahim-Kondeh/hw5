@@ -108,7 +108,27 @@
 
     <script>
         function generateClassInputs() {
-           
+            var classInputsDiv = document.getElementById("classInputs");
+            var classNum = classInputsDiv.children.length + 1;
+
+            var classInputDiv = document.createElement("div");
+            classInputDiv.className = "input-group";
+            classInputDiv.innerHTML = `
+                <h3>Class ${classNum}</h3>
+                <label for="className${classNum}">Class Name:</label>
+                <input type="text" id="className${classNum}">
+                <label for="exam${classNum}">Exam (40%):</label>
+                <input type="number" id="exam${classNum}" min="0" max="100">
+                <label for="homework${classNum}">Homework (30%):</label>
+                <input type="number" id="homework${classNum}" min="0" max="100">
+                <label for="project${classNum}">Project (20%):</label>
+                <input type="number" id="project${classNum}" min="0" max="100">
+                <label for="participation${classNum}">Class Participation (10%):</label>
+                <input type="number" id="participation${classNum}" min="0" max="100">
+                <label for="gpaHours${classNum}">GPA Hours:</label>
+                <input type="number" id="gpaHours${classNum}" min="0">
+            `;
+            classInputsDiv.appendChild(classInputDiv);
         }
 
         function calculateGrades() {
