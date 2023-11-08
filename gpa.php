@@ -14,9 +14,7 @@
         $grades = $_POST["grades"];
         $creditHours = $_POST["creditHours"];
         
-        // Perform GPA calculation logic here
-        
-        // Example: Calculate average grade and display
+     
         $gradesArray = explode(",", $grades);
         $creditHoursArray = explode(",", $creditHours);
         $totalPoints = 0;
